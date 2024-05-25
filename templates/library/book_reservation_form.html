@@ -1,0 +1,11 @@
+<!-- library_app/templates/library_app/book_reservation_form.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Reserve a Book</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Reserve</button>
+    </form>
+{% endblock %}
