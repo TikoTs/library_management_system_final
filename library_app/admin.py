@@ -1,6 +1,5 @@
 from django.contrib import admin
 from library_app.models import Author, Genre, Book, BookReservation, BooksBorrow
-from library_app.filters import BookFilter
 
 
 @admin.register(Author)
