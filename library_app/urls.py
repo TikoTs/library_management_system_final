@@ -39,7 +39,7 @@ urlpatterns = [
     path("books/", AllBooksListView.as_view(), name="available-books"),
     path("books/<int:pk>/", BookDetailView.as_view(), name="book-detail"),
     path("books/create/", BookCreateAPIView.as_view(), name="book-create"),
-    path("books/<int:pk>/update/", BookUpdateAPIView.as_view(), name="book-update"),
+    path("books/<int:pk>/update/", BookUpdateAPIView.as_view(), name="book-update"),  # Used dropdown here
     path("books/reserve/", BookReservationCreateView.as_view(), name="book-reserve"),
     path(
         "books/borrow/<int:pk>/return/",
