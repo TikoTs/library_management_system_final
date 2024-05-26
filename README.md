@@ -78,7 +78,6 @@ This project is a Library Management System built using Django. It allows librar
 
 4. Run migrations:
    ```bash
-   python manage.py makemigrations
    python manage.py migrate
    ```
 
