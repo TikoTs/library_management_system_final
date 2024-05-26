@@ -18,8 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from library_app.views import BookViewSet, AuthorViewSet, GenreViewSet, BookCreateAPIView, \
-    BookUpdateAPIView
+from library_app.views import AuthorViewSet, GenreViewSet, BookViewSet
 
 router = DefaultRouter()
 router.register(r'authors', AuthorViewSet)
@@ -27,9 +26,8 @@ router.register(r'genres', GenreViewSet)
 router.register(r'books', BookViewSet)
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path('admin/', admin.site.urls),
     path('accounts/', include('accounts_app.urls')),
-    path('books/create/', BookCreateAPIView.as_view(), name='book-create'),
-    path('books/<int:pk>/', BookUpdateAPIView.as_view(), name='book-retrieve-update-destroy'),
     path('api/', include(router.urls)),
+    path('', include('library_app.urls')),
 ]
