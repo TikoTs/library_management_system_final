@@ -61,8 +61,8 @@ This project is a Library Management System built using Django. It allows librar
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/library_management_system.git
-   cd library_management_system
+   git clone https://github.com/TikoTs/library_management_system_final.git
+   cd library_management_system_final
    ```
 
 2. Create a virtual environment and activate it:
@@ -78,6 +78,7 @@ This project is a Library Management System built using Django. It allows librar
 
 4. Run migrations:
    ```bash
+   python manage.py makemigrations
    python manage.py migrate
    ```
 
