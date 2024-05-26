@@ -7,4 +7,8 @@ class IsLibrarian(permissions.BasePermission):
     """
 
     def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated and request.user.role == 'librarian'
+        return (
+            request.user
+            and request.user.is_authenticated
+            and request.user.role == "librarian"
+        )

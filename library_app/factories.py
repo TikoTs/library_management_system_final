@@ -9,7 +9,7 @@ def create_author():
     return baker.make(
         Author,
         name=fake.name(),
-        birthdate=fake.date_of_birth(minimum_age=25, maximum_age=90)
+        birthdate=fake.date_of_birth(minimum_age=25, maximum_age=90),
     )
 
 
