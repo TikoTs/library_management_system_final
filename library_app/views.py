@@ -118,7 +118,7 @@ class BookReservationCreateView(generics.CreateAPIView):
 
         with transaction.atomic():
             book.stock_quantity -= 1
-            book.save()
+            book.save(update_fields=['stock_quantity'])
 
             reservation = BookReservation.objects.create(
                 book=book,
@@ -140,8 +140,8 @@ class BooksBorrowUpdateView(generics.UpdateAPIView):
         borrow.borrowed_status = "returned"
         borrow.return_date = timezone.now()
         borrow.book.stock_quantity += 1
-        borrow.book.save()
-        borrow.save()
+        borrow.book.save(update_fields=['stock_quantity'])
+        borrow.save(update_fields=['borrowed_status', 'return_date'])
         return Response(
             {"status": "Book returned successfully"}, status=status.HTTP_200_OK
         )
