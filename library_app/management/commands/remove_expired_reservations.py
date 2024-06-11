@@ -13,7 +13,7 @@ class Command(BaseCommand):
         )
 
         for reservation in expired_reservations:
-            reservation.book.quantity_in_stock += 1
+            reservation.book.stock_quantity += 1
             reservation.book.save()
             reservation.delete()
 
