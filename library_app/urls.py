@@ -9,7 +9,9 @@ from library_app.views import (
     BookReservationCreateView,
     BooksBorrowUpdateView,
     AvailableBookTitlesView,
-    StatisticsAPIView, BookListView,
+    StatisticsAPIView,
+    BookListView,
+    BookRequestCreateView,
 )
 
 urlpatterns = [
@@ -38,7 +40,9 @@ urlpatterns = [
     path("books/", AllBooksListView.as_view(), name="books"),
     path("books/<int:pk>/", BookDetailView.as_view(), name="book-detail"),
     path("books/create/", BookCreateAPIView.as_view(), name="book-create"),
-    path("books/<int:pk>/update/", BookUpdateAPIView.as_view(), name="book-update"),  # Used dropdown here
+    path(
+        "books/<int:pk>/update/", BookUpdateAPIView.as_view(), name="book-update"
+    ),  # Used dropdown here
     path("books/reserve/", BookReservationCreateView.as_view(), name="book-reserve"),
     path(
         "books/borrow/<int:pk>/return/",
@@ -50,5 +54,6 @@ urlpatterns = [
         AvailableBookTitlesView.as_view(),
         name="available-book-titles",
     ),
+    path("book-requests/", BookRequestCreateView.as_view(), name="book-request-create"),
     path("statistics/", StatisticsAPIView.as_view(), name="popular-books"),
 ]

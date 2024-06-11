@@ -143,7 +143,11 @@ class BooksBorrow(models.Model):
     )
     borrowed_status = models.CharField(
         max_length=50,
-        choices=[("borrowed", "Borrowed"), ("returned", "Returned")],
+        choices=[
+            ("borrowed", "Borrowed"),
+            ("returned", "Returned"),
+            ("requested", "Requested"),
+        ],
         default="borrowed",
         verbose_name=_("Borrowed Status"),
     )
@@ -153,6 +157,7 @@ class BooksBorrow(models.Model):
         verbose_name=_("Return Date"),
         help_text=_("Date/time of returning borrowed book"),
     )
+    notified = models.BooleanField(default=False, verbose_name=_("Notified"))
 
     class Meta:
         verbose_name = _("Books Borrow")

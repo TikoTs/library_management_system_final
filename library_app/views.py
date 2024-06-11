@@ -52,11 +52,20 @@ class BookViewSet(viewsets.ModelViewSet):
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
     filterset_fields = ["author", "genre"]
     search_fields = ["title", "author__name", "genre__name"]
+    ordering_fields = ["demand"]  # 'title', 'author__name', 'genre__name'
     pagination_class = None  # Django's default pagination
+    ordering = ["-demand"]  # Default ordering will be by demand
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        return Book.objects.all().annotate(demand=Count("borrows")).order_by("-demand")
 
 
 class BookDetailView(generics.RetrieveAPIView):
@@ -119,7 +128,7 @@ class BookReservationCreateView(generics.CreateAPIView):
 
         with transaction.atomic():
             book.stock_quantity -= 1
-            book.save(update_fields=['stock_quantity'])
+            book.save(update_fields=["stock_quantity"])
 
             reservation = BookReservation.objects.create(
                 book=book,
@@ -141,11 +150,36 @@ class BooksBorrowUpdateView(generics.UpdateAPIView):
         borrow.borrowed_status = "returned"
         borrow.return_date = timezone.now()
         borrow.book.stock_quantity += 1
-        borrow.book.save(update_fields=['stock_quantity'])
-        borrow.save(update_fields=['borrowed_status', 'return_date'])
+        borrow.book.save(update_fields=["stock_quantity"])
+        borrow.save(update_fields=["borrowed_status", "return_date"])
         return Response(
             {"status": "Book returned successfully"}, status=status.HTTP_200_OK
         )
+
+
+class BookRequestCreateView(generics.CreateAPIView):
+    queryset = BooksBorrow.objects.all()
+    serializer_class = BooksBorrowSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        book_id = request.data.get("book")
+        book = Book.objects.get(id=book_id)
+
+        if book.stock_quantity > 0:
+            return Response(
+                {"error": "Book is available, no need to request."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        request_instance = BooksBorrow.objects.create(
+            book=book,
+            borrower=request.user,
+            borrowed_status="requested",
+        )
+
+        serializer = self.get_serializer(request_instance)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class StatisticsAPIView(APIView):
