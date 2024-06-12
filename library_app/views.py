@@ -59,7 +59,7 @@ class BookListView(generics.ListAPIView):
     ]
     filterset_fields = ["author", "genre"]
     search_fields = ["title", "author__name", "genre__name"]
-    ordering_fields = ["demand"]  # 'title', 'author__name', 'genre__name'
+    ordering_fields = ["demand"]
     pagination_class = None  # Django's default pagination
     ordering = ["-demand"]  # Default ordering will be by demand
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -102,7 +102,7 @@ class AvailableBookTitlesView(generics.ListAPIView):
 class BookReservationView(CreateView):
     model = BookReservation
     form_class = BookReservationForm
-    template_name = "templates/library/book_reservation_form.html"
+    template_name = 'templates/library/book_reservation_form.html'
     success_url = reverse_lazy("book-list")
 
     def form_valid(self, form):

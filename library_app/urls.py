@@ -10,8 +10,8 @@ from library_app.views import (
     BooksBorrowUpdateView,
     AvailableBookTitlesView,
     StatisticsAPIView,
-    BookListView,
     BookRequestCreateView,
+BookListView,
 )
 
 urlpatterns = [
@@ -32,6 +32,7 @@ urlpatterns = [
         GenreViewSet.as_view({"get": "list", "post": "create"}),
         name="genre-list",
     ),
+    path('book/listview-filters', BookListView.as_view(), ),
     path(
         "genres/<int:pk>/",
         GenreViewSet.as_view({"get": "retrieve", "put": "update", "delete": "destroy"}),
