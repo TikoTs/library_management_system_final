@@ -5,56 +5,57 @@
     <title>Reserve a Book</title>
 </head>
 <body>
-    <h1>Reserve a Book</h1>
-    <form id="reservation-form">
-        <label for="book">Choose a book:</label>
-        <select id="book-dropdown" name="book">
-            <!-- Options will be populated here -->
-        </select>
-        <button type="submit">Reserve</button>
-    </form>
+<h1>Reserve a Book</h1>
+<form id="reservation-form" method="post">{% csrf_token %}
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const dropdown = document.getElementById('book-dropdown');
+    <label for="book">Choose a book:</label>
+    <select id="book-dropdown" name="book">
+        <!-- Options will be populated here -->
+    </select>
+    <button type="submit">Reserve</button>
+</form>
 
-            fetch('/books/available-titles/', {
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdown = document.getElementById('book-dropdown');
+
+        fetch('/books/available-titles/', {
+            headers: {
+                'Authorization': 'Bearer YOUR_TOKEN_HERE'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(book => {
+                    const option = document.createElement('option');
+                    option.value = book.id;
+                    option.textContent = book.title;
+                    dropdown.appendChild(option);
+                });
+            });
+
+        document.getElementById('reservation-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const selectedBookId = dropdown.value;
+
+            fetch('/books/reserve/', {
+                method: 'POST',
                 headers: {
+                    'Content-Type': 'application/json',
                     'Authorization': 'Bearer YOUR_TOKEN_HERE'
-                }
+                },
+                body: JSON.stringify({book: selectedBookId})
             })
                 .then(response => response.json())
                 .then(data => {
-                    data.forEach(book => {
-                        const option = document.createElement('option');
-                        option.value = book.id;
-                        option.textContent = book.title;
-                        dropdown.appendChild(option);
-                    });
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        alert('Book reserved successfully!');
+                    }
                 });
-
-            document.getElementById('reservation-form').addEventListener('submit', function (event) {
-                event.preventDefault();
-                const selectedBookId = dropdown.value;
-
-                fetch('/books/reserve/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer YOUR_TOKEN_HERE'
-                    },
-                    body: JSON.stringify({ book: selectedBookId })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.error) {
-                            alert(data.error);
-                        } else {
-                            alert('Book reserved successfully!');
-                        }
-                    });
-            });
         });
-    </script>
+    });
+</script>
 </body>
 </html>
