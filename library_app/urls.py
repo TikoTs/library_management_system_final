@@ -4,6 +4,7 @@ from library_app.views import (
     GenreViewSet,
     BookCreateAPIView,
     BookUpdateAPIView,
+    BookListView,
     AllBooksListView,
     BookDetailView,
     BookReservationCreateView,
@@ -11,7 +12,6 @@ from library_app.views import (
     AvailableBookTitlesView,
     StatisticsAPIView,
     BookRequestCreateView,
-BookListView,
 )
 
 urlpatterns = [
@@ -32,7 +32,7 @@ urlpatterns = [
         GenreViewSet.as_view({"get": "list", "post": "create"}),
         name="genre-list",
     ),
-    path('book/listview-filters', BookListView.as_view(), ),
+    path('books/listview-filters', BookListView.as_view(), ),
     path(
         "genres/<int:pk>/",
         GenreViewSet.as_view({"get": "retrieve", "put": "update", "delete": "destroy"}),
