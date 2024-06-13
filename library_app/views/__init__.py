@@ -13,7 +13,7 @@ from library_app.views.views import (
 )
 from library_app.views.statistics_views import StatisticsAPIView
 
-__all__ = [
+__all__ =[
     "AuthorViewSet",
     "GenreViewSet",
     "BookListView",
