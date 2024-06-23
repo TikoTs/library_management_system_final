@@ -44,6 +44,9 @@ This project is a Library Management System built using Django. It allows librar
      - The list of books has filtering, searching, and pagination.
    - Users can reserve a book for 1 day if it is in stock. If the book is not taken out, the reservation is automatically removed.
    - After returning the book, the librarian can mark in the database that the book has been returned by the specific user.
+- For overdue books, the appropriate functionality sends an email to the user reminding them that the book has to be returned (Management Command).
+- When all copies of a desired book have been checked out from the library, users can specify a check-out request, and a notification is sent when the book becomes available (Management Command and API).
+- The book list is sorted according to book demand (added to the endpoint of the book list).
 
 ### Statistics
 5. API for statistical data:
